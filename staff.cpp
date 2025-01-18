@@ -37,7 +37,7 @@ bool staffLogin() {
     }
 
     cout << "Too many failed attempts. Redirecting to main menu.\n";
-    return false; // Login failure as number of attempt has been exhausted.
+    return false; // Login failure as number of attempt has been used up.
 }
 
 // Displaying the staff menu //
@@ -45,7 +45,7 @@ void staffMenu() {
     int choice;
     while (true) {
         cout << "\nStaff Menu:\n";
-        cout << "1. Restock Items\n";
+        cout << "1. Restock or Remove Items\n";
         cout << "2. Set Item Prices\n";
         cout << "3. View Stock\n";
         cout << "4. Exit to Main Menu\n";
@@ -93,7 +93,7 @@ void manageItems() {
 
     switch (choice) {
         case '1': {
-            cout << "Enter the amount to add > ";
+            cout << "Enter the amount of quantity to add > ";
             cin >> quantity;
             
             stock[item] += quantity;
@@ -107,8 +107,8 @@ void manageItems() {
             cin >> quantity;
             
             if (quantity > stock[item]) {
-                cout << "Error: Cannot remove more than current stock (" 
-                     << stock[item] << " units available).\n";
+                cout << "Error: Cannot remove more than current available stock (" 
+                     << stock[item] << " units).\n";
             } else {
                 stock[item] -= quantity;
                 cout << "Successfully removed " << quantity << " units of " << item << ".\n";
