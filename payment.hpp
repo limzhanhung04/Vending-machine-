@@ -1,5 +1,5 @@
-#ifndef payment _hpp
-#define payment _hpp
+#ifndef PAYMENT_HPP
+#define PAYMENT_HPP
 
 #include "inventory.hpp"
 #include <iostream>
