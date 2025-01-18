@@ -1,4 +1,4 @@
-#include "Product.hpp"
+#include "product.hpp"
 #include <iostream>
 #include <fstream>
 #include <string>
