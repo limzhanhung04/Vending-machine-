@@ -9,7 +9,7 @@ char user;
   
 cout << " WELCOME TO VELOR VENDING MACHINE ";
 do {
-cout << "Enter ('c') for customer and ('s') for staff: ";
+cout << "/n/nEnter ('c') for customer and ('s') for staff: ";
 cin >> user ;
 if ( user == 's'|| user =='S')
 {
