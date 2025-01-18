@@ -1,8 +1,9 @@
-#include "staff.hpp"
-#include <iostream>
-#include <iomanip>
+#include "staff.hpp"    // Header file
+#include <iostream>     //
+#include <iomanip>      // Generalise precise and correct decimal places and stock display.
 #include <string>
 #include <map>
+#include <limits>       // 
 
 using namespace std;
 
@@ -14,33 +15,44 @@ map<string, double> prices;
 const string STAFF_USERNAME = "Admin";
 const string STAFF_PASSWORD = "69420";
 
-// Staff login function //
 bool staffLogin() {
     string username, password;
-    int attempts = 3; // Allow up to 3 attempts before redirecting to prevent endless loop. 
+    int attempts = 3; // Allow up to 3 attempts before redirecting to main menu to prevent endless loops.
 
-    // Input from staff //
     while (attempts > 0) {
         cout << "\nStaff Login\n";
-        cout << "Please enter your Username > ";
-        cin >> username;
-        cout << "Please enter your Password > ";
-        cin >> password;
 
+        // Input username from staff //
+        cout << "Please enter your Username > ";
+        getline(cin, username); 
+        if (username.empty()) { // Check for empty input.
+            cout << "Username cannot be empty. Please try again.\n";
+            continue;
+        }
+
+        // Input password from staff //
+        cout << "Please enter your Password > ";
+        getline(cin, password); 
+        if (password.empty()) { 
+            cout << "Password cannot be empty. Please try again.\n";
+            continue;
+        }
+
+        // Check credentials validity //
         if (username == STAFF_USERNAME && password == STAFF_PASSWORD) {
             cout << "Login successful! Welcome, Admin.\n";
-            return true; // Correct password and username. 
+            return true; // Successfully logged in as the input for username and password is correct.
         } else {
             attempts--;
-            cout << "Invalid password or username. You have " << attempts << " attempt(s) remaining.\n"; // Incorrect password or username.
+            cout << "Invalid password or username. You have " << attempts << " attempt(s) remaining.\n"; // Wrong username or password.
         }
     }
 
     cout << "Too many failed attempts. Redirecting to main menu.\n";
-    return false; // Login failure as number of attempt has been used up.
+    return false; // Failure to log in after exhausting attempts.
 }
 
-// Displaying the staff menu //
+// Menu for staff to choose his/her actions //
 void staffMenu() {
     int choice;
     while (true) {
@@ -49,8 +61,9 @@ void staffMenu() {
         cout << "2. Set Item Prices\n";
         cout << "3. View Stock\n";
         cout << "4. Exit to Main Menu\n";
-        cout << "Enter your choice (1 - 4) > ";
-        cin >> choice;
+
+        // Use safeInput to validate only numeric input by staff //
+        safeInput(choice, "Enter your choice (1 - 4) > ");
 
         switch (choice) {
             case 1:
@@ -66,7 +79,7 @@ void staffMenu() {
                 cout << "Returning to main menu.\n";
                 return;
             default:
-                cout << "Invalid choice. Please try again.\n";
+                cout << "Invalid choice. Please try again by entering input within the given range.\n";
         }
     }
 }
@@ -93,8 +106,7 @@ void manageItems() {
 
     switch (choice) {
         case '1': {
-            cout << "Enter the amount of quantity to add > ";
-            cin >> quantity;
+            safeInput(quantity, "Enter the amount of quantity to add (minimum requirement = 1) > ");
             
             stock[item] += quantity;
             cout << "Successfully restocked " << item << " with " << quantity << " units.\n";
@@ -103,8 +115,7 @@ void manageItems() {
         }
         
         case '2': {
-            cout << "Enter the amount of quantity to remove > ";
-            cin >> quantity;
+            safeInput(quantity, "Enter the amount of quantity to remove (minimum requirement = 1) > ");
             
             if (quantity > stock[item]) {
                 cout << "Error: Cannot remove more than current available stock (" 
@@ -142,15 +153,18 @@ void setItemPrices() {
 
 // Display the current stock and prices //
 void displayStock() {
+    if (stock.empty()) {
+        cout << "\nInventory is empty.\n";
+        return; // To prevent displaying void in the case where there's literally no stocks left.
+    }
+
     cout << "\nCurrent Inventory:\n";
-    
     cout << left 
          << setw(20) << "Item"
          << setw(10) << "Quantity"
          << setw(10) << "Price" << "\n";
-    
     cout << string(40, '-') << "\n";
-    
+
     for (const auto& [item, quantity] : stock) {
         cout << left 
              << setw(20) << item
@@ -158,3 +172,20 @@ void displayStock() {
              << "RM" << fixed << setprecision(2) << prices[item] << "\n";
     }
 }
+
+
+// To prevent processing failure of the program if the inputs are alphabets while integers are expected. 
+void safeInput(int& value, const string& prompt) {
+    while (true) {
+        cout << prompt;
+        if (cin >> value) { // Valid numeric input
+            break; 
+
+        } else { // Invalid input (i.e., alphabets or symbols)
+            cin.clear(); // Clear the fail state
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // To discard invalid input
+            cout << "Invalid input. Please enter a number in the range provided.\n";
+        }
+    }
+}
+
