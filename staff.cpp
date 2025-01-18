@@ -81,7 +81,7 @@ void staffMenu() {
 
         switch (choice) {
             case 1:
-                restockItems();
+                manageItems();
                 break;
             case 2:
                 setItemPrices();
@@ -98,25 +98,56 @@ void staffMenu() {
     }
 }
 
-
-// Restocking an item //
-void restockItems() {
+// Restocking or removing an item //
+void manageItems() {
     string item;
     int quantity;
+    char choice;
 
-    cout << "\nEnter the item name to restock > ";
+    cout << "\nInventory Management";
+    cout << "\n1. Restock items";
+    cout << "\n2. Remove expired items";
+    cout << "\nEnter your choice (1-2) > ";
+    cin >> choice;
+
+    cout << "\nEnter the item name > ";
     cin >> item;
-    cout << "Enter the amount of quantity to add > ";
-    cin >> quantity;
 
-    if (stock.find(item) != stock.end()) {
-        stock[item] += quantity;
-        cout << "Successfully restocked " << item << " with " << quantity << " units.\n";
-        cout << "New total stock: " << stock[item] << " units.\n";
-    } else {
-        cout << "Restocking canceled.\n";
-        }
+    if (stock.find(item) == stock.end()) {
+        cout << "Item not found in inventory.\n";
+        return;
     }
+
+    switch (choice) {
+        case '1': {
+            cout << "Enter the amount to add > ";
+            cin >> quantity;
+            
+            stock[item] += quantity;
+            cout << "Successfully restocked " << item << " with " << quantity << " units.\n";
+            cout << "New total stock: " << stock[item] << " units.\n";
+            break;
+        }
+        
+        case '2': {
+            cout << "Enter the amount of quantity to remove > ";
+            cin >> quantity;
+            
+            if (quantity > stock[item]) {
+                cout << "Error: Cannot remove more than current stock (" 
+                     << stock[item] << " units available).\n";
+            } else {
+                stock[item] -= quantity;
+                cout << "Successfully removed " << quantity << " units of " << item << ".\n";
+                cout << "Remaining stock: " << stock[item] << " units.\n";
+            }
+            break;
+        }
+        
+        default:
+            cout << "Invalid choice. Operation canceled.\n";
+    }
+}
 
 // Set or readjust the price of an item //
 void setItemPrices() {
@@ -145,11 +176,11 @@ void displayStock() {
          << setw(10) << "Quantity"
          << setw(10) << "Price" << "\n";
     
-    cout << string(35, '-') << "\n";
+    cout << string(40, '-') << "\n";
     
     for (const auto& [item, quantity] : stock) {
         cout << left 
-             << setw(15) << item
+             << setw(20) << item
              << setw(10) << quantity
              << "RM" << fixed << setprecision(2) << prices[item] << "\n";
     }

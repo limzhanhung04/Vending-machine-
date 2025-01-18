@@ -12,7 +12,7 @@ extern map<string, double> prices; // Stores item names and their prices
 
 // Function declarations
 bool staffLogin();        // Authenticate staff before granting access
-void restockItems();      // Restock items in the vending machine
+void manageItems();      // Restock items in the vending machine
 void setItemPrices();     // Update the prices of items in the vending machine
 void displayStock();      // Display current inventory (stock and prices) of the items
 void staffMenu();         // Staff menu for accessing these functions
