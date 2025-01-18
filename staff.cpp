@@ -6,33 +6,6 @@
 
 using namespace std;
 
-#include "staff.hpp"
-#include <iostream>
-
-using namespace std;
-
-int main() {
-    // Initialize inventory for testing
-    stock = {
-        {"Mineral_Water", 20},
-        {"Coca_Cola", 15},
-        {"Lays", 10},
-        {"Kit_Kat", 5}
-    };
-
-    prices = {
-        {"Mineral_Water", 1.00},
-        {"Coca_Cola", 2.00},
-        {"Lays", 4.00},
-        {"Kit_Kat", 1.50}
-    };
-
-    // Test staff menu
-    staffMenu();
-
-    return 0;
-}
-
 // Definitions for inventory data //
 map<string, int> stock;
 map<string, double> prices;
@@ -76,7 +49,7 @@ void staffMenu() {
         cout << "2. Set Item Prices\n";
         cout << "3. View Stock\n";
         cout << "4. Exit to Main Menu\n";
-        cout << "Enter your choice > ";
+        cout << "Enter your choice (1 - 4) > ";
         cin >> choice;
 
         switch (choice) {
@@ -90,7 +63,7 @@ void staffMenu() {
                 displayStock();
                 break;
             case 4:
-                cout << "Returning to main menu. \n";
+                cout << "Returning to main menu.\n";
                 return;
             default:
                 cout << "Invalid choice. Please try again.\n";
